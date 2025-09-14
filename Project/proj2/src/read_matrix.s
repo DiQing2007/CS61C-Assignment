@@ -110,11 +110,11 @@ malloc_err:
     li a1, 88
     j exit2
 fopen_err:
-    li a1, 89
-    j exit2
-fread_err:
     li a1, 90
     j exit2
-fclose_err:
+fread_err:
     li a1, 91
+    j exit2
+fclose_err:
+    li a1, 92
     j exit2

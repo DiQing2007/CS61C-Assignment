@@ -72,7 +72,7 @@ write_matrix:
     mv a3, s2
     li a4, 4
     jal ra, fwrite
-    
+
     bne s2, a0, fwrite_err
 
 #fclose
