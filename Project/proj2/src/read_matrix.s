@@ -84,7 +84,7 @@ read_matrix:
     li s8, 4
     bne a0, s3, fread_err
 #fclose(fp)
-    mv a0, s0
+    mv a1, s0
     jal ra, fclose
     li s8, -1
     beq s8, a0, fclose_err
