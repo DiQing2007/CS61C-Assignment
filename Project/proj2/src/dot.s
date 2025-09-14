@@ -91,8 +91,8 @@ loop_end:
     
     ret
 shit1:
-    li a0, 75
+    li a1, 75
     j exit2
 shit2:
-    li a0, 76
+    li a1, 76
     j exit2

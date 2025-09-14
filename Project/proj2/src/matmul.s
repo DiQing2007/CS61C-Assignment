@@ -118,11 +118,11 @@ outer_loop_end:
     addi sp, sp, 48
     ret
 shit1:
-    li a0, 72
+    li a1, 72
     j exit2
 shit2:
-    li a0, 73
+    li a1, 73
     j exit2
 shit3:
-    li a0, 74
+    li a1, 74
     j exit2
