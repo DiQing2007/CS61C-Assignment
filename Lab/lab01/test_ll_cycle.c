@@ -51,6 +51,6 @@ int main(void) {
 
     is_correct = is_correct && !ll_has_cycle(NULL);
     printf("Checking length-zero list for cycles. There should be none, ll_has_cycle says it has %s cycle\n", ll_has_cycle(NULL)?"a":"no");
-
+    printf("%d\n", is_correct);
     return is_correct ? 0 : 1;
 }

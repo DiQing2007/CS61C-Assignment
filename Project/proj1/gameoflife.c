@@ -23,6 +23,68 @@
 Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 {
 	//YOUR CODE HERE
+	int i = 0;
+	int j = 0;
+	int is_alive = 0;
+	int is_dead = 0;
+	int tmp = 0;
+	int tmp1=0;
+	int tmp2=0;
+	int rows = image->rows;
+	int cols = image->cols;
+	int flag = 0;
+	int is_flip_alive = 0;
+	uint16_t live = (rule >> 9) & 0b111111111;
+	uint16_t dead = rule & 0b111111111;
+	uint16_t check = 0;
+	uint8_t blue  = image->image[row][col].B;
+	uint8_t red   = image->image[row][col].R;
+	uint8_t green = image->image[row][col].G;
+	Color * color = (Color*)malloc(sizeof(Color));
+	//if((!blue) == 0 && (!red) ==0 && (!green) == 0){
+	if(red == 255){
+		flag = 1;
+	}
+	if(flag){
+		check = live;
+	}
+	else{
+		check = dead;
+	}
+	for(i = 0; i<3; i++){
+		for(j = 0;j<3; j++){
+			if(i == 1 && j == 1){
+				continue;
+			}
+			tmp = image->image[(row - 1 + i + rows) % rows ][(col - 1 + j + cols) % cols].B;
+			tmp1 = image->image[(row - 1 + i + rows) % rows ][(col - 1 + j + cols) % cols].G;
+			tmp2 = image->image[(row - 1 + i + rows) % rows ][(col - 1 + j + cols) % cols].R;
+			if( tmp2 !=255 ){
+				is_dead++;
+			}
+			else{
+				is_alive++;
+			}
+		}
+	}
+	if(flag){
+		is_flip_alive = !!((1 << is_alive) & check);
+	}
+	else{
+		is_flip_alive = !!((1 << is_alive) & check);
+	}
+	if(is_flip_alive){
+		color->R = 0b11111111;
+		color->G = 0b11111111;
+		color->B = 0b11111111;
+	}
+	else{
+		color->R = 0b0;
+		color->G = 0b0;
+		color->B = 0b0;
+	}
+	
+	return color;
 }
 
 //The main body of Life; given an image and a rule, computes one iteration of the Game of Life.
@@ -30,6 +92,31 @@ Color *evaluateOneCell(Image *image, int row, int col, uint32_t rule)
 Image *life(Image *image, uint32_t rule)
 {
 	//YOUR CODE HERE
+	int i = 0;
+	int j = 0;
+	int col = 0;
+	int row = 0;
+	Color* color = NULL;
+	col = image->cols;
+	row = image->rows;
+	Image *image_re = (Image *)malloc(sizeof(Image));
+	image_re->cols = col;
+	image_re->rows = row;
+	image_re->image = (Color **)malloc(sizeof(Color *) * row);
+	for(i = 0; i < row; i++){
+		image_re->image[i] = (Color *)malloc(sizeof(Color) * col);
+	}
+	for(i = 0; i < row; i++){
+		for(j = 0; j < col ; j++){
+			color = evaluateOneCell(image, i, j, rule);
+			image_re->image[i][j].R = color->R;
+			image_re->image[i][j].G = color->G;
+			image_re->image[i][j].B = color->B;
+			free(color);
+			color = NULL;
+		}
+	}
+	return image_re;
 }
 
 /*
@@ -50,4 +137,14 @@ You may find it useful to copy the code from steganography.c, to start.
 int main(int argc, char **argv)
 {
 	//YOUR CODE HERE
+	char *magic = argv[2];
+	uint32_t rule = (uint32_t)strtol(magic, NULL, 0);
+	char * filename = argv[1];
+	Image *image =  readData(filename);
+	Image *result = life(image, rule);
+	writeData(result);
+	freeImage(image);
+	freeImage(result);
+
+
 }
